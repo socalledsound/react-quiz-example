@@ -1,0 +1,11 @@
+.questionCardContainer{
+    width: 100px;
+    background-color: rgba(200, 120,200,0.8);
+    color:black;
+    border-radius: 6px;
+    margin-right: 25px;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+   
+}
