@@ -34,8 +34,8 @@ class QuestionForm extends Component {
                         answerOptions.map((answer, idx) => 
                             <RadioInput 
                                 key={`radio${idx}`}
-                                text={answer.answerText}
-                                checked={selectedOption === answer.answerText}
+                                text={answer}
+                                checked={selectedOption === answer}
                                 updateParent={this.onChange}
                             />)
                     }

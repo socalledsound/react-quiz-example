@@ -4,6 +4,7 @@ import Scoreboard from './components/ScoreBoard'
 import QuestionCard from './components/QuestionCard'
 import SelectedQuestion from './components/SelectedQuestion';
 import WrongAnswer from './components/WrongAnswer'
+import CorrectAnswer from './components/CorrectAnswer'
 import styles from './App.module.css'
 class App extends Component {
   
@@ -11,6 +12,7 @@ class App extends Component {
       selectedQuestionIdx: null,
       score: 0,
       correctlyAnswered: [],
+      correctAnswer: false,
       wrongAnswer: false
     }
 
@@ -19,6 +21,7 @@ class App extends Component {
       console.log(answer)
       if(answer === questions[selectedQuestionIdx].correctAnswer){
         this.setState({ score: score + 1,  correctlyAnswered: correctlyAnswered.concat([selectedQuestionIdx])})
+        this.setCorrectAnswer()
       } else {
         this.setState({ wrongAnswer : true })
       }
@@ -28,12 +31,24 @@ class App extends Component {
       this.setState({ wrongAnswer: false})
     }
 
+    setCorrectAnswer(){
+      this.setState({correctAnswer: true})
+    }
+
+    clearCorrectAnswer(){
+      this.setState({correctAnswer: false})
+    }
+
     selectQuestion = (idx) => {
       this.setState({selectedQuestionIdx : idx})
+      this.clearCorrectAnswer()
+      this.resetWrongAnswer()
     } 
 
+
+
   render(){
-    const { score, selectedQuestionIdx, correctlyAnswered, wrongAnswer } = this.state
+    const { score, selectedQuestionIdx, correctlyAnswered, wrongAnswer, correctAnswer } = this.state
    
     return (
       <div className={styles.appContainer}>
@@ -46,19 +61,28 @@ class App extends Component {
             {
             // I'm thinking these will be just divs with the questions and you
             // can select which question you want to answer?
-            questions.map((question, idx) => 
+            questions.map((question, idx) => {
+                const alreadyCorrect = correctlyAnswered.filter((el) => el === question.id).length
+                return (
                   <QuestionCard 
                         key={`question-card-${idx}`} 
                         question={question}
                         idx={idx}
                         updateParent={this.selectQuestion}
+                        alreadyCorrect={alreadyCorrect}
                         />
-                        )
+                        
+                )
+
+            })
             }
           </div>
           <div>
             {
-                              wrongAnswer ? 
+              correctAnswer ? 
+                <CorrectAnswer />
+                :
+                wrongAnswer ? 
                               <WrongAnswer resetWrongAnswer={this.resetWrongAnswer}/> 
                               :
               selectedQuestionIdx !== null ?
@@ -70,7 +94,7 @@ class App extends Component {
              
                 :
 
-                <p>please select a question above</p>
+                <p>please select a category above</p>
               }
           </div>    
       </div>

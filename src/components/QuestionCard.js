@@ -1,19 +1,34 @@
 import React from 'react'
 import styles from './QuestionCard.module.css'
 
-const QuestionCard = ({question, idx, updateParent}) => {
+const QuestionCard = ({question, idx, updateParent, alreadyCorrect}) => {
+    console.log(alreadyCorrect)
     return ( 
-        <div 
+        <div>
+        {alreadyCorrect ? 
+            <div 
+            className={styles.answeredQuestionCardContainer}
+
+        >
+
+            {'\u2713'}
+            
+        </div>
+        
+        : 
+         <div 
             onClick={() => updateParent(idx)}
-            className={styles.questionCardContainer}
+            className={styles.activeQuestionCardContainer}
 
         >
             {
-                //could have the whole question here or just a number?
-                idx
+                question.heading
             }
             
             
+        </div>
+
+        }
         </div>
      );
 }
